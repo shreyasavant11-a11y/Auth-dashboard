@@ -9,22 +9,15 @@ function Register() {
     const navigate = useNavigate()
 
     const handleRegister = async () => {
-        if (password.length < 8) {
-            alert('Password must be at least 8 characters!')
-            return
-        }
-        if (!/[A-Z]/.test(password)) {
-            alert('Password must have at least one uppercase letter!')
-            return
-        }
-        if (!/[a-z]/.test(password)) {
-            alert('Password must have at least one lowercase letter!')
-            return
-        }
-        if (!/[!@#$%^&*]/.test(password)) {
-            alert('Password must have at least one special character!')
-            return
-        }
+        if (
+    password.length < 8 ||
+    !/[A-Z]/.test(password) ||
+    !/[a-z]/.test(password) ||
+    !/[!@#$%^&*]/.test(password)
+) {
+    alert('Password must be at least 8 characters and contain 1 uppercase, 1 lowercase and 1 special character (!@#$%^&*)')
+    return
+}
         if (!/\S+@\S+\.\S+/.test(email)) {
             alert('Please enter a valid email!')
             return
