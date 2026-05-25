@@ -1,16 +1,115 @@
-# React + Vite
+# Auth Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full stack authentication system built with React and Node.js. Features secure user registration, login, and protected routes using JWT authentication.
 
-Currently, two official plugins are available:
+Live Demo: [auth-dashboard-iota.vercel.app](https://auth-dashboard-iota.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User Registration with input validation
+- Secure Login with JWT tokens
+- Password hashing with bcrypt (salt rounds: 10)
+- Protected Dashboard — unauthorized users redirected to login
+- Persistent sessions using localStorage
+- CORS configured for cross-origin requests
+- RESTful API architecture
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18, Vite, Tailwind CSS, React Router v6 |
+| Backend | Node.js, Express.js |
+| Database | PostgreSQL |
+| Authentication | JWT, bcryptjs |
+| Deployment | Vercel (frontend), Render (backend + DB) |
+
+---
+
+## What It Does
+
+A complete user authentication flow:
+
+1. **Register** — validates input, hashes password with bcrypt, stores in PostgreSQL
+2. **Login** — verifies credentials, returns signed JWT token
+3. **Dashboard** — protected route, only accessible with valid token
+4. **Logout** — clears token from localStorage
+
+---
+
+## Folder Structure
+
+```
+auth-dashboard/
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   └── ProtectedRoute.jsx    # Route guard component
+│       └── pages/
+│           ├── Login.jsx
+│           ├── Register.jsx
+│           └── Dashboard.jsx
+└── backend/
+    ├── controllers/
+    │   └── authController.js         # Register & Login logic
+    ├── middleware/
+    │   └── authMiddleware.js         # JWT verification
+    ├── routes/
+    │   └── authRoutes.js             # API endpoints
+    ├── db.js                          # PostgreSQL connection pool
+    └── server.js                      # Express server entry point
+```
+
+---
+
+## Local Setup
+
+### Backend
+
+```bash
+cd backend
+npm install
+node server.js
+```
+
+Add a `.env` file in `/backend`:
+
+```env
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+DB_NAME=auth_db
+DB_PORT=5432
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=http://localhost:5173
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Add a `.env` file in `/frontend`:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+---
+
+## Deployment
+
+| Service | Platform |
+|---------|----------|
+| Frontend | Vercel |
+| Backend | Render |
+| Database | Render PostgreSQL |
+
+> Backend is on Render free tier — first request may take ~30 seconds to wake up.
